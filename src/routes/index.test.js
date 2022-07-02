@@ -8,6 +8,15 @@ const testUser = {
     id: '12345'
 }
 
+
+const testUser2 = {
+    name: 'João',
+    age: 12,
+    isAlive: true,
+    id: '1234'
+}
+
+
 test('should create a user and return the same user from get by id', async () => {
 
 
@@ -47,3 +56,11 @@ it('should return a empty list', async () => {
     expect(getAllResponse.body).toHaveLength(0)
     expect(getAllResponse.status).toBe(200)
 })
+
+
+// quero que vocês escrevam o teste para o update
+// o método update, retorna 200
+// e retorna o objeto atualizado
+// get by id
+// use: .toEqual()
+// e implementem o update de usuário
