@@ -1,15 +1,17 @@
 import request from 'supertest'
 import { app } from '../index.js'
 
-test('should create a user', async () => {
+const testUser = {
+    name: 'Marcelina',
+    age: 1000,
+    isAlive: false,
+    id: '12345'
+}
+
+test('should create a user and return the same user from get by id', async () => {
 
 
-    const testUser = {
-        name: 'Marcelina',
-        age: 1000,
-        isAlive: false,
-        id: '12345'
-    }
+
 
     const createUserResponse = await request(app).post('/').send(testUser)
 
@@ -21,4 +23,27 @@ test('should create a user', async () => {
     expect(getUserResponse.status).not.toEqual(404)
     expect(getUserResponse.body).toEqual(testUser)
 
+})
+
+
+it('should return a list with one user', async () => {
+
+    const getAllResponse = await request(app).get('/')
+    expect(getAllResponse.body).toHaveLength(1)
+    expect(getAllResponse.status).toBe(200)
+})
+
+
+it('should return a empty list', async () => {
+
+
+    const deleteResponse = await request(app)
+        .delete(`/${testUser.id}`)
+
+    expect(deleteResponse.body).toEqual(testUser)
+    expect(deleteResponse.status).toBe(200)
+
+    const getAllResponse = await request(app).get('/')
+    expect(getAllResponse.body).toHaveLength(0)
+    expect(getAllResponse.status).toBe(200)
 })
