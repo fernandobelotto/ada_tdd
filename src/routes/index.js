@@ -1,42 +1,49 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-let users = []
+let users = [];
 
 export const routes = new Router();
 
-routes.post('/', (req, res) => {
+routes.post("/", (req, res) => {
+  users.push(req.body);
 
-    users.push(req.body)
+  res.send({
+    status: "criado",
+  });
+});
 
-    res.send({
-        status: 'criado'
-    })
-})
+routes.get("/:id", (req, res) => {
+  const userId = req.params.id;
 
-routes.get('/:id', (req, res) => {
+  const user = users.find((user) => user.id === userId);
 
-    const userId = req.params.id
+  res.send(user);
+});
 
-    const user = users.find((user) => user.id === userId )
+routes.get("/", (req, res) => {
+  res.send(users);
+});
 
-    res.send(user)
-})
+routes.delete("/:id", (req, res) => {
+  const userId = req.params.id;
 
-routes.get('/', (req,res) => {
+  const user = users.find((user) => user.id === userId);
 
-        res.send(users)
-})
+  const newUsers = users.filter((user) => user.id !== userId);
 
+  users = newUsers;
 
-routes.delete('/:id', (req, res) => {
+  res.send(user);
+});
 
-    const userId = req.params.id
+routes.put("/:id", (req, res) => {
+  const userId = req.params.id;
 
-    const user = users.find((user) => user.id === userId)
+  const userToUpdate = req.body;
 
-    const newUsers = users.filter((user) => user.id !== userId)
+  const newUsers = users.filter((user) => user.id !== userId);
 
-    users = newUsers
+  users = [...newUsers, userToUpdate];
 
-    res.send(user)
-})
+  res.send(userToUpdate);
+});
